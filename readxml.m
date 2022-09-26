@@ -190,12 +190,10 @@ function DOMnode = getDOMnode(xmlfile)
     if isOctave() % Octave
         javaaddpath(fullfile(fileparts(mfilename('fullpath')),'xerces','xercesImpl.jar'));
         javaaddpath(fullfile(fileparts(mfilename('fullpath')),'xerces','xml-apis.jar'));
+        pkg('load','io');
 
         % read xml file using Octave function
-        parser = javaObject("org.apache.xerces.parsers.DOMParser");
-        parser.parse(xmlfile);
-        DOMnode = parser.getDocument();
-
+        DOMnode = xmlread(xmlfile);
     else % MATLAB
         %% Check Matlab Version
         v = ver('MATLAB');
@@ -466,7 +464,12 @@ end
 %  =======================================================================
 function otree = expand_tree(itree,Pref)
     if isfield(itree,'local') % locals used
-        otree = expand_tree(itree.aap,Pref);
+        if isOctave
+            otree = readxml(which(itree.xi_COLON_include.ATTRIBUTE.href));
+        else
+            rootName = fieldnames(itree);
+            otree = expand_tree(itree.(rootName{1}),Pref);
+        end
         otree = mergeStructs(otree,itree.local,Pref);
     else
         otree = itree;

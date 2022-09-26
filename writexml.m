@@ -84,17 +84,7 @@ function DOMnode = writexml(varargin)
 %
 % Written by Jarek Tuszynski, SAIC, jaroslaw.w.tuszynski_at_saic.com
 % Tibor Auer - add inputParser
-
-    if isOctave() % Octave
-        error('Octave is not yet supported');
-    else % MATLAB
-        %% Check Matlab Version
-        v = ver('MATLAB');
-        v = str2double(regexp(v.Version, '\d.\d','match','once'));
-        if (v<7)
-          error('Your MATLAB version is too old. You need version 7.0 or newer.');
-        end
-    end
+% Tibor Auer - Octave
 
     %% default preferences: filename, tree, RootName, Pref
     defaultItemName   = 'item'; % name of a special tag used to itemize cell arrays
@@ -162,8 +152,24 @@ function DOMnode = writexml(varargin)
       warning('xml_io_tools:write:docType', ...
        'DOCUMENT_TYPE node was encountered which is not supported yet. Ignoring.');
     end
-    DOMnode = com.mathworks.xml.XMLUtils.createDocument(RootName);
 
+    if isOctave() % Octave
+        javaaddpath(fullfile(fileparts(mfilename('fullpath')),'xerces','xercesImpl.jar'));
+        javaaddpath(fullfile(fileparts(mfilename('fullpath')),'xerces','xml-apis.jar'));
+        pkg('load','io');
+
+        DOMnode = javaObject ("org.apache.xerces.dom.DocumentImpl");
+        root = DOMnode.createElement (RootName);
+        DOMnode.appendChild (root);
+    else % MATLAB
+        %% Check Matlab Version
+        v = ver('MATLAB');
+        v = str2double(regexp(v.Version, '\d.\d','match','once'));
+        if (v<7)
+          error('Your MATLAB version is too old. You need version 7.0 or newer.');
+        end
+        DOMnode = com.mathworks.xml.XMLUtils.createDocument(RootName);
+    end
 
     %% Use recursive function to convert matlab data structure to XML
     root = DOMnode.getDocumentElement;
