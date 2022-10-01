@@ -464,6 +464,7 @@ end
 %  =======================================================================
 function otree = expand_tree(itree,Pref)
     if isfield(itree,'local') % locals used
+        assert(Pref.ReadAttr,'XML Inclusions (XInclude) requires ReadAttr = true');
         if isOctave
             otree = readxml(which(itree.xi_COLON_include.ATTRIBUTE.href));
         else
