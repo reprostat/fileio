@@ -110,6 +110,7 @@ function [tree, RootName, DOMnode] = readxml(varargin)
     DPref = argParse.Results;
 
     if (ischar(DPref.xmlfile)) % if xmlfile is a string
+      DPref.xmlfile = which(DPref.xmlfile);
       if (DPref.Debug)
         DOMnode = getDOMnode(DPref.xmlfile);
       else
