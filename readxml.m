@@ -413,9 +413,7 @@ function str = str2varName(str)
 % convert a sting to a valid matlab variable name
     str = regexprep(str,':','_COLON_', 'once', 'ignorecase');
     str = regexprep(str,'-','_DASH_'  ,'once', 'ignorecase');
-    if (~isvarname(str))
-      str = genvarname(str);
-    end
+    if (~isvarname(str)), str = matlab.lang.makeValidName(str); end
 end
 
 %% =======================================================================
