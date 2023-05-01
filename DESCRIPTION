@@ -1,0 +1,12 @@
+name: fileio
+version: 1.1.0
+date: 2023-01-05
+author: Tibor Auer <tibor.auer@gmail.com>
+maintainer: Tibor Auer <tibor.auer@gmail.com>
+title: I/O function for files holding structured data
+description: The package contains reading and writing functions and conveninece
+ wrappers for common file types holding structured data. This version handles
+ JSON and XML files.
+ The XML-related function are based on the work of Jarek Tuszynski at SAIC.
+categories: package
+depends: octave (>= 7.2.0)
