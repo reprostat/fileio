@@ -484,7 +484,7 @@ function res = mergeStructs(x,y,Pref)
     if isstruct(x) && isstruct(y)
         res = x;
 
-        if numel(res) > 1 % orig is array
+        if numel(res) > 1 || numel(y) > 1 % orig is array
             for yitem = 1:numel(y) % for each new item
                 % look for corresponding item (i.e. any matching)
                 if ~isfield(res,Pref.ItemID) || ~isfield(y,Pref.ItemID), error('ARRAY ERROR: Field %s as specified in Pref.ItemID not found.', Pref.ItemID); end
@@ -510,7 +510,7 @@ function res = mergeStructs(x,y,Pref)
         names = fieldnames(y);
         for fnum = 1:numel(names)
             if isfield(x,names{fnum})
-                res.(names{fnum}) = mergeStructs(x.(names{fnum}),y.(names{fnum}),Pref);
+                res.(names{fnum}) = mergeStructs(x.(names{fnum}),[y.(names{fnum})],Pref);
             else
                 res.(names{fnum}) = y.(names{fnum});
             end
