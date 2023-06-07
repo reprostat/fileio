@@ -10,14 +10,18 @@ function jsonwrite(fname,val)
     fid = fopen(fname,'w');
 
     % Pretty print
-    strJSON = strreps(jsonencode(val),{',' '{' '}' '[' ']'},{',$' '{$' '}$' '[$' '$]$'});
-    strJSON = strrep(strJSON,'$,',',');
-    cellJSON = strsplit(strJSON,'$'); cellJSON(end) = [];
+
+
+    strJSON = strreps(jsonencode(val),{'{' '}' '[' ']' ','},{'{$' '$}' '[$' '$]',',$'}); % encode '\n' with '$'
+    cellJSON = strsplit(strJSON,'$');
     nInd = 0;
     for l = 1:numel(cellJSON)
         lineJSON{l} = [repmat(' ',1,sum(nInd)) cellJSON{l}];
         if endsWith(cellJSON{l},{'{' '['}), nInd = [nInd numel(cellJSON{l})]; end
-        if startsWith(cellJSON{l},{'}' ']'}), nInd(end) = []; end
+        if startsWith(cellJSON{l},{'}' ']' '},' '],'})
+            lineJSON{l}(1) = [];
+            nInd(end) = [];
+        end
     end
 
     % Write
