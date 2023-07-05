@@ -9,7 +9,7 @@ function val = jsonread(fname)
 % OUTPUT
 %   val - structure, content of the JSON file.
 
-    fid = fopen(which(fname),'r');
+    fid = fopen(readLink(fname),'r');
     val = jsondecode(char(fread(fid,Inf)'));
     fclose(fid);
 end
