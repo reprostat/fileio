@@ -156,7 +156,6 @@ function DOMnode = writexml(varargin)
     if isOctave() % Octave
         javaaddpath(fullfile(fileparts(mfilename('fullpath')),'xerces','xercesImpl.jar'));
         javaaddpath(fullfile(fileparts(mfilename('fullpath')),'xerces','xml-apis.jar'));
-        pkg('load','io');
 
         DOMnode = javaObject ("org.apache.xerces.dom.DocumentImpl");
         root = DOMnode.createElement (RootName);

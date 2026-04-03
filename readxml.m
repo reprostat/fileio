@@ -191,7 +191,6 @@ function DOMnode = getDOMnode(xmlfile)
     if isOctave() % Octave
         javaaddpath(fullfile(fileparts(mfilename('fullpath')),'xerces','xercesImpl.jar'));
         javaaddpath(fullfile(fileparts(mfilename('fullpath')),'xerces','xml-apis.jar'));
-        pkg('load','io');
 
         % read xml file using Octave function
         DOMnode = xmlread(xmlfile);
